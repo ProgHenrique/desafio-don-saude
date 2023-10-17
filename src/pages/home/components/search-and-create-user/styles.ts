@@ -62,25 +62,9 @@ const SearchItemsArea = styled('div', {
   },
 })
 
-export const InputSearch = styled(SearchItemsArea, {
-  maxWidth: 352,
-  width: '100%',
-  gridArea: 'inputSearch',
-  span: {
-    lineHeight: 0,
-  },
-
-  input: {
-    all: 'unset',
-    width: '100%',
-    fontSize: '$xs',
-    '@desktop': {
-      fontSize: '$sm',
-    },
-  },
-})
-
 export const ShowColumns = styled(SearchItemsArea, {
+  cursor: 'pointer',
+  backgroundColor: '$white',
   gridArea: 'showColumns',
   span: {
     fontSize: '0.625rem',
@@ -92,7 +76,16 @@ export const ShowColumns = styled(SearchItemsArea, {
 })
 
 export const ShowFilters = styled(SearchItemsArea, {
+  cursor: 'pointer',
+  backgroundColor: '$white',
   gridArea: 'showFilters',
+  variants: {
+    ableToFilter: {
+      true: {
+        border: '1px solid $blue',
+      },
+    },
+  },
 
   span: {
     fontSize: '0.625rem',

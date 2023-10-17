@@ -7,9 +7,10 @@ import { useContext } from 'react'
 import { EmpyContext } from 'src/contexts/contextEmpy'
 import WithoutUsersRegistered from '../without-users-registered'
 import SearchAndCreateUser from '../search-and-create-user'
+import convertDateFormat from 'src/utils/convert-date-format'
 
 export default function TableOfUsers() {
-  const { tableColumns } = useContext(EmpyContext)
+  const { tableColumns, seeColumns } = useContext(EmpyContext)
 
   const tableCells = [
     'Nome',
@@ -26,7 +27,7 @@ export default function TableOfUsers() {
       {tableColumns.length < 1 ? (
         <WithoutUsersRegistered />
       ) : (
-        <Flex>
+        <Flex css={{ display: `${seeColumns ? 'block' : 'none'}` }}>
           <Table>
             <thead>
               <tr>
@@ -53,8 +54,8 @@ export default function TableOfUsers() {
                       <span>{column.email}</span>
                     </td>
                     <td>{column.role}</td>
-                    <td>{column.created_at}</td>
-                    <td>{column.updated_at}</td>
+                    <td>{convertDateFormat(column.created_at)}</td>
+                    <td>{convertDateFormat(column.updated_at)}</td>
                     <td>
                       <div
                         style={{
