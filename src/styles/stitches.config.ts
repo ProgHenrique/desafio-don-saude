@@ -33,12 +33,14 @@ export const { styled, globalCss } = createStitches({
 
       blue: '#00BDFF',
       blueDark: '#121929',
+      gray100: 'rgba(18, 25, 41, 0.12)',
+
+      title: '#121929',
+      body: '#EAEDEE',
     },
   },
 
   media: {
-    desktop: '(min-width: 1200px)',
-    tablet: '(min-width: 768px)',
-    mobile: '(max-width: 500px)',
+    desktop: '(min-width: 1024px)',
   },
 })
