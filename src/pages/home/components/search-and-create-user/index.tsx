@@ -11,13 +11,18 @@ import {
   Flex,
 } from './styles'
 import { useWindowSize } from 'src/hooks/use-window-size'
-import { useContext } from 'react'
+import { ChangeEvent, useContext } from 'react'
 import { EmpyContext } from 'src/contexts/contextEmpy'
 
 export default function SearchAndCreateUser() {
-  const { tableColumns } = useContext(EmpyContext)
+  const { tableColumns, searchUser } = useContext(EmpyContext)
   const windowSize = useWindowSize()
   const isWindowSizeDesktop = windowSize > 1024
+
+  function handleSearch(event: ChangeEvent<HTMLInputElement>) {
+    const term = event.target.value.toLowerCase().trim()
+    searchUser(term)
+  }
 
   // in case screen is smaller than 1024px render window to desktop
   if (isWindowSizeDesktop) {
@@ -28,7 +33,7 @@ export default function SearchAndCreateUser() {
             <span>
               <Search size={isWindowSizeDesktop ? 16 : 12} />
             </span>
-            <input type="text" placeholder="Buscar" />
+            <input type="text" placeholder="Buscar" onChange={handleSearch} />
           </InputSearch>
           <NumberOfUsers>
             <span>Número de usuários:</span>
@@ -76,7 +81,7 @@ export default function SearchAndCreateUser() {
           <span>
             <Search size={isWindowSizeDesktop ? 16 : 12} />
           </span>
-          <input type="text" placeholder="Buscar" />
+          <input type="text" placeholder="Buscar" onChange={handleSearch} />
         </InputSearch>
         <ShowColumns>
           <span>Ver colunas</span>

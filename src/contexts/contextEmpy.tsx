@@ -1,4 +1,4 @@
-import { ReactNode, createContext, useState } from 'react'
+import { ReactNode, createContext, useEffect, useState } from 'react'
 
 interface tableColumn {
   name: string
@@ -10,6 +10,7 @@ interface tableColumn {
 interface EmpyContextType {
   tableColumns: tableColumn[]
   deleteUser: (index: number) => void
+  searchUser: (term: string) => void
 }
 
 export const EmpyContext = createContext({} as EmpyContextType)
@@ -84,13 +85,21 @@ export function EmpyContextProvider({ children }: ListContextProviderProps) {
       updated_at: '31/05/2023 00:06',
     },
     {
-      name: 'Nome completo do usuário',
+      name: 'Henrique Ramos',
       email: 'nome.sobrenome@empresa.com.br',
       role: 'Gerente',
       created_at: '31/05/2023 00:06',
       updated_at: '31/05/2023 00:06',
     },
   ])
+
+  const [tableColumnBackup, setTableColumnBackup] = useState<tableColumn[]>([])
+
+  useEffect(() => {
+    if (tableColumns.length > tableColumnBackup.length) {
+      setTableColumnBackup([...tableColumns])
+    }
+  }, [tableColumnBackup, tableColumns])
 
   const deleteUser = (index: number) => {
     setTableColumns((state) => {
@@ -99,11 +108,29 @@ export function EmpyContextProvider({ children }: ListContextProviderProps) {
     })
   }
 
+  const searchUser = (term: string) => {
+    if (term === '') {
+      setTableColumns([...tableColumnBackup])
+      return
+    }
+    const likeUsers = tableColumns.filter(
+      (item) => item.name.toLowerCase().indexOf(term) > -1,
+    )
+
+    if (likeUsers.length < 1) {
+      setTableColumns([...tableColumnBackup])
+      return
+    }
+
+    setTableColumns([...likeUsers])
+  }
+
   return (
     <EmpyContext.Provider
       value={{
         tableColumns,
         deleteUser,
+        searchUser,
       }}
     >
       {children}
