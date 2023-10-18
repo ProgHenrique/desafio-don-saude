@@ -2,7 +2,7 @@ import { styled } from './stitches.config'
 
 export const InputSearch = styled('div', {
   display: 'flex',
-  padding: '0.5rem',
+  padding: '0.75rem',
   alignItems: 'center',
   justifyContent: 'center',
   gap: '0.5rem',
@@ -19,10 +19,11 @@ export const InputSearch = styled('div', {
 
   input: {
     all: 'unset',
+    cursor: 'text',
     width: '100%',
     fontSize: '$xs',
     '@desktop': {
-      fontSize: '$sm',
+      fontSize: '$md',
     },
   },
 

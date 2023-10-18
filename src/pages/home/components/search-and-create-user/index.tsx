@@ -14,15 +14,17 @@ import { ChangeEvent, useContext, useState } from 'react'
 import { EmpyContext } from 'src/contexts/contextEmpy'
 import { InputSearch } from 'src/styles/input'
 import FormFilter from '../form-filter'
+import { useNavigate } from 'react-router-dom'
 
 export default function SearchAndCreateUser() {
   const { tableColumns, searchUser, seeColumns, setSeeColumns } =
     useContext(EmpyContext)
   const [ableToFilter, setAbleToFilter] = useState(false)
-  const windowSize = useWindowSize()
-  const isWindowSizeDesktop = windowSize > 1024
+  const [termToSearch, setTermToSearch] = useState('')
+  const navigate = useNavigate()
 
   function handleSearch(event: ChangeEvent<HTMLInputElement>) {
+    setTermToSearch(event.target.value)
     const term = event.target.value.toLowerCase().trim()
     searchUser(term)
   }
@@ -35,17 +37,29 @@ export default function SearchAndCreateUser() {
     setAbleToFilter(!ableToFilter)
   }
 
+  function handleCreateNewUser() {
+    navigate('/create-user')
+  }
+
+  const windowSize = useWindowSize()
+  const isWindowSizeDesktop = windowSize > 1024
+
   return (
     // in case screen is smaller than 1024px render window to desktop
     <>
       {isWindowSizeDesktop ? (
         <SearchContainer>
           <Flex>
-            <InputSearch css={{ maxWidth: 352 }}>
+            <InputSearch css={{ maxWidth: 352, padding: '0.5rem' }}>
               <span>
                 <Search size={isWindowSizeDesktop ? 16 : 12} />
               </span>
-              <input type="text" placeholder="Buscar" onChange={handleSearch} />
+              <input
+                type="text"
+                placeholder="Buscar"
+                value={termToSearch}
+                onChange={handleSearch}
+              />
             </InputSearch>
             <NumberOfUsers>
               <span>Número de usuários:</span>
@@ -73,6 +87,7 @@ export default function SearchAndCreateUser() {
               color="blue"
               size={isWindowSizeDesktop ? 'sm' : 'xs'}
               css={{ fontWeight: 'bold' }}
+              onClick={handleCreateNewUser}
             >
               Cadastrar usuário
             </Button>
@@ -89,16 +104,22 @@ export default function SearchAndCreateUser() {
               color="blue"
               size={isWindowSizeDesktop ? 'sm' : 'xs'}
               css={{ fontWeight: 'bold' }}
+              onClick={handleCreateNewUser}
             >
               Cadastrar usuário
             </Button>
           </UserCreateAndNumberOfUsers>
           <SearchArea>
-            <InputSearch>
+            <InputSearch css={{ padding: '0.5rem' }}>
               <span>
                 <Search size={isWindowSizeDesktop ? 16 : 12} />
               </span>
-              <input type="text" placeholder="Buscar" onChange={handleSearch} />
+              <input
+                type="text"
+                placeholder="Buscar"
+                value={termToSearch}
+                onChange={handleSearch}
+              />
             </InputSearch>
             <ShowColumns as={'button'} onClick={handleChangeColumnVisibility}>
               <span>{seeColumns ? 'esconder colunas' : 'ver colunas'}</span>

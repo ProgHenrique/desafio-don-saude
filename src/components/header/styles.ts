@@ -16,11 +16,17 @@ export const Container = styled('div', {
 export const Header = styled('header', {
   display: 'flex',
   flexDirection: 'column',
-  gap: '1.25rem',
+  gap: '0.75rem',
   '& > strong': {
     fontSize: '1.25rem',
     '@desktop': {
       fontSize: '1.75rem',
     },
+  },
+
+  '& > p': {
+    color: 'rgba(18, 25, 41, 0.64)',
+    display: 'flex',
+    alignItems: 'center',
   },
 })

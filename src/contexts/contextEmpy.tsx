@@ -4,6 +4,8 @@ interface TableColumn {
   name: string
   email: string
   role: string
+  phone: string
+  password: string
   created_at: string
   updated_at: string
 }
@@ -15,14 +17,25 @@ interface FilterFormData {
   updated_at: string
 }
 
+interface CreateUserFormData {
+  name: string
+  email: string
+  role: string
+  phone: string
+  password: string
+  confirmPassword: string
+}
+
 interface EmpyContextType {
   tableColumns: TableColumn[]
+  numberOfUsers: number
   seeColumns: boolean
   deleteUser: (index: number) => void
   searchUser: (term: string) => void
   setSeeColumns: React.Dispatch<React.SetStateAction<boolean>>
   filterUsers: (data: FilterFormData) => void
   clearFilter: () => void
+  createNewUser: (data: CreateUserFormData) => void
 }
 
 export const EmpyContext = createContext({} as EmpyContextType)
@@ -33,79 +46,10 @@ interface ListContextProviderProps {
 
 export function EmpyContextProvider({ children }: ListContextProviderProps) {
   // user table columns
-  const [tableColumns, setTableColumns] = useState<TableColumn[]>([
-    {
-      name: 'Nome completo do usuário',
-      email: 'nome.sobrenome@empresa.com.br',
-      role: 'Adm',
-      created_at: '2023-05-31',
-      updated_at: '2023-05-31',
-    },
-    {
-      name: 'Nome completo do usuário',
-      email: 'nome.sobrenome@empresa.com.br',
-      role: 'Ascom Empy',
-      created_at: '2023-05-31',
-      updated_at: '2023-05-31',
-    },
-    {
-      name: 'Nome completo do usuário',
-      email: 'nome.sobrenome@empresa.com.br',
-      role: 'Comercial Empy',
-      created_at: '2023-05-31',
-      updated_at: '2023-05-31',
-    },
-    {
-      name: 'Nome completo do usuário',
-      email: 'nome.sobrenome@empresa.com.br',
-      role: 'Gerente',
-      created_at: '2023-05-31',
-      updated_at: '2023-05-31',
-    },
-    {
-      name: 'Nome completo do usuário',
-      email: 'nome.sobrenome@empresa.com.br',
-      role: 'Diretor',
-      created_at: '2023-05-31',
-      updated_at: '2023-05-31',
-    },
-    {
-      name: 'Nome completo do usuário',
-      email: 'nome.sobrenome@empresa.com.br',
-      role: 'Comercial',
-      created_at: '2023-05-31',
-      updated_at: '2023-05-31',
-    },
-    {
-      name: 'Nome completo do usuário',
-      email: 'nome.sobrenome@empresa.com.br',
-      role: 'Financeiro',
-      created_at: '2023-05-31',
-      updated_at: '2023-05-31',
-    },
-    {
-      name: 'Nome completo do usuário',
-      email: 'nome.sobrenome@empresa.com.br',
-      role: 'Diretor',
-      created_at: '2023-05-31',
-      updated_at: '2023-05-31',
-    },
-    {
-      name: 'Nome completo do usuário',
-      email: 'nome.sobrenome@empresa.com.br',
-      role: 'Diretor',
-      created_at: '2023-05-31',
-      updated_at: '2023-05-31',
-    },
-    {
-      name: 'Henrique Ramos',
-      email: 'nome.sobrenome@empresa.com.br',
-      role: 'Gerente',
-      created_at: '2023-05-31',
-      updated_at: '2023-05-31',
-    },
-  ])
+  const [tableColumns, setTableColumns] = useState<TableColumn[]>([])
   const [tableColumnBackup, setTableColumnBackup] = useState<TableColumn[]>([])
+
+  const numberOfUsers = tableColumnBackup.length
 
   // show and hide columns
   const [seeColumns, setSeeColumns] = useState(true)
@@ -128,14 +72,9 @@ export function EmpyContextProvider({ children }: ListContextProviderProps) {
       setTableColumns([...tableColumnBackup])
       return
     }
-    const likeUsers = tableColumns.filter(
+    const likeUsers = tableColumnBackup.filter(
       (item) => item.name.toLowerCase().indexOf(term) > -1,
     )
-
-    if (likeUsers.length < 1) {
-      setTableColumns([...tableColumnBackup])
-      return
-    }
 
     setTableColumns([...likeUsers])
   }
@@ -154,7 +93,6 @@ export function EmpyContextProvider({ children }: ListContextProviderProps) {
         createdAt === column.created_at &&
         updatedAt === column.updated_at
       ) {
-        console.log(column)
         return column
       }
 
@@ -168,16 +106,39 @@ export function EmpyContextProvider({ children }: ListContextProviderProps) {
     setTableColumns([...tableColumnBackup])
   }
 
+  const createNewUser = ({
+    email,
+    name,
+    password,
+    phone,
+    role,
+  }: CreateUserFormData) => {
+    setTableColumns([
+      ...tableColumns,
+      {
+        email,
+        name,
+        role,
+        password,
+        phone: phone.replace(/\D/g, ''),
+        updated_at: new Date().toISOString().split('T')[0],
+        created_at: new Date().toISOString().split('T')[0],
+      },
+    ])
+  }
+
   return (
     <EmpyContext.Provider
       value={{
         tableColumns,
+        numberOfUsers,
         seeColumns,
         deleteUser,
         searchUser,
         setSeeColumns,
         filterUsers,
         clearFilter,
+        createNewUser,
       }}
     >
       {children}

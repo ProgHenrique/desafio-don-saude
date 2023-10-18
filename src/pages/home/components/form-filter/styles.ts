@@ -18,16 +18,6 @@ export const Form = styled('form', {
   },
 })
 
-export const Label = styled('label', {
-  width: '100%',
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '0.5rem',
-  p: {
-    fontSize: '$xs',
-  },
-})
-
 export const Flex = styled('div', {
   display: 'flex',
   alignItems: 'center',

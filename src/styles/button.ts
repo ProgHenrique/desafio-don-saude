@@ -7,6 +7,8 @@ export const Button = styled('button', {
   gap: 6,
   cursor: 'pointer',
   padding: '0.5rem 1.5rem',
+  alignItems: 'center',
+  justifyContent: 'center',
   '@desktop': {
     padding: '0.75rem 2rem',
   },

@@ -1,5 +1,5 @@
 import { InputSearch } from 'src/styles/input'
-import { Flex, Form, Label } from './styles'
+import { Flex, Form } from './styles'
 import { Calendar, Search } from 'lucide-react'
 import { Button } from 'src/styles/button'
 import { useWindowSize } from 'src/hooks/use-window-size'
@@ -8,6 +8,7 @@ import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useContext } from 'react'
 import { EmpyContext } from 'src/contexts/contextEmpy'
+import { Label } from 'src/styles/label'
 
 const filterFormSchema = z.object({
   benefit: z.string().transform((benefit) => benefit.toLowerCase()),
@@ -53,7 +54,7 @@ export default function FormFilter({ ableToFilter }: FormFilterProps) {
       <div>
         <Label>
           <p>Benefício</p>
-          <InputSearch>
+          <InputSearch css={{ padding: '0.5rem' }}>
             <span>
               <Search size={16} />
             </span>
@@ -66,7 +67,7 @@ export default function FormFilter({ ableToFilter }: FormFilterProps) {
         </Label>
         <Label>
           <p>Cargo</p>
-          <InputSearch>
+          <InputSearch css={{ padding: '0.5rem' }}>
             <span>
               <Search size={16} />
             </span>
@@ -75,7 +76,7 @@ export default function FormFilter({ ableToFilter }: FormFilterProps) {
         </Label>
         <Label>
           <p>Data de cadastro</p>
-          <InputSearch>
+          <InputSearch css={{ padding: '0.5rem' }}>
             <input
               type="date"
               max={new Date().toISOString().split('T')[0]}
@@ -91,7 +92,7 @@ export default function FormFilter({ ableToFilter }: FormFilterProps) {
         </Label>
         <Label>
           <p>Data da última alteração</p>
-          <InputSearch>
+          <InputSearch css={{ padding: '0.5rem' }}>
             <input
               type="date"
               max={new Date().toISOString().split('T')[0]}
