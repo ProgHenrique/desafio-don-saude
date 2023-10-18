@@ -1,7 +1,7 @@
 import { Button } from 'src/styles/button'
 import * as AlertDialog from '@radix-ui/react-alert-dialog'
 import { Flex, Section, Table, TableCell } from './style'
-import { ChevronsUpDown, PenSquare, Trash2 } from 'lucide-react'
+import { ChevronRight, ChevronsUpDown, PenSquare, Trash2 } from 'lucide-react'
 import { useContext } from 'react'
 import { EmpyContext } from 'src/contexts/contextEmpy'
 import convertDateFormat from 'src/utils/convert-date-format'
@@ -9,9 +9,11 @@ import SearchAndCreateUser from './components/search-and-create-user'
 import WithoutUsersRegistered from './components/without-users-registered'
 import DeleteScreenPopUp from './components/delete-user-of-table'
 import EditUserScreenPopUp from './components/edit-user'
+import { useNavigate } from 'react-router-dom'
 
 export default function TableOfUsers() {
-  const { tableColumns, seeColumns } = useContext(EmpyContext)
+  const { tableColumns, seeColumns, userToInfoPage } = useContext(EmpyContext)
+  const navigate = useNavigate()
 
   const tableCells = [
     'Nome',
@@ -20,6 +22,11 @@ export default function TableOfUsers() {
     'Última alteração',
     'Ações',
   ]
+
+  function handleUserMoreInfos(index: number) {
+    userToInfoPage(index)
+    navigate('/user')
+  }
 
   return (
     <Section>
@@ -91,6 +98,15 @@ export default function TableOfUsers() {
                           </AlertDialog.Trigger>
                           <DeleteScreenPopUp index={index} />
                         </AlertDialog.Root>
+
+                        <Button
+                          color="gray"
+                          size="xs"
+                          css={{ padding: '0.5rem', maxHeight: 12 }}
+                          onClick={() => handleUserMoreInfos(index)}
+                        >
+                          <ChevronRight size={12} style={{ lineHeight: 0 }} />
+                        </Button>
                       </div>
                     </td>
                   </tr>

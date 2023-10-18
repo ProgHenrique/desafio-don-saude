@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import Splash from './components/splash'
 import CreateNewUser from './pages/create-user'
 import DefaultLayout from './layout/default-layout'
+import ViewUserInfos from './pages/view-user'
 
 export default function Router() {
   const [userAuthenticated, setUserAuthenticated] = useState(false)
@@ -12,7 +13,7 @@ export default function Router() {
   useEffect(() => {
     setTimeout(() => {
       setUserAuthenticated(true)
-    }, 2000)
+    }, 1000)
   }, [])
 
   useEffect(() => {
@@ -27,6 +28,7 @@ export default function Router() {
       >
         <Route path="/" element={<Home />} />
         <Route path="/create-user" element={<CreateNewUser />} />
+        <Route path="/user" element={<ViewUserInfos />} />
       </Route>
     </Routes>
   )

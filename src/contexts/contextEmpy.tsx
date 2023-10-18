@@ -35,6 +35,7 @@ interface EditUserFormData {
 
 interface EmpyContextType {
   tableColumns: TableColumn[]
+  user: TableColumn
   numberOfUsers: number
   seeColumns: boolean
   deleteUser: (index: number) => void
@@ -44,6 +45,7 @@ interface EmpyContextType {
   clearFilter: () => void
   createNewUser: (data: CreateUserFormData) => void
   editUser: (index: number, data: EditUserFormData) => void
+  userToInfoPage: (index: number) => void
 }
 
 export const EmpyContext = createContext({} as EmpyContextType)
@@ -56,6 +58,15 @@ export function EmpyContextProvider({ children }: ListContextProviderProps) {
   // user table columns
   const [tableColumns, setTableColumns] = useState<TableColumn[]>([])
   const [tableColumnBackup, setTableColumnBackup] = useState<TableColumn[]>([])
+  const [user, setUser] = useState<TableColumn>({
+    email: '',
+    password: '',
+    name: '',
+    phone: '',
+    role: '',
+    created_at: '',
+    updated_at: '',
+  })
 
   const numberOfUsers = tableColumnBackup.length
 
@@ -73,6 +84,10 @@ export function EmpyContextProvider({ children }: ListContextProviderProps) {
       state.splice(index, 1)
       return [...state]
     })
+  }
+
+  const userToInfoPage = (index: number) => {
+    setUser(tableColumns[index])
   }
 
   const searchUser = (term: string) => {
@@ -155,6 +170,7 @@ export function EmpyContextProvider({ children }: ListContextProviderProps) {
     <EmpyContext.Provider
       value={{
         tableColumns,
+        user,
         numberOfUsers,
         seeColumns,
         deleteUser,
@@ -164,6 +180,7 @@ export function EmpyContextProvider({ children }: ListContextProviderProps) {
         clearFilter,
         createNewUser,
         editUser,
+        userToInfoPage,
       }}
     >
       {children}

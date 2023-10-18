@@ -4,10 +4,10 @@ import { EmpyContextProvider } from './contexts/contextEmpy'
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <EmpyContextProvider>
+    <EmpyContextProvider>
+      <BrowserRouter>
         <Router />
-      </EmpyContextProvider>
-    </BrowserRouter>
+      </BrowserRouter>
+    </EmpyContextProvider>
   )
 }
