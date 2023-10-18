@@ -11,7 +11,7 @@ import { Button } from 'src/styles/button'
 import { EmpyContext } from 'src/contexts/contextEmpy'
 import { useNavigate } from 'react-router-dom'
 import * as Toast from '@radix-ui/react-toast'
-import ToastSuccessCreated from './toast-success-created'
+import ToastSuccessCreated from './toast-sucess-created'
 
 const createUserFormSchema = z
   .object({
@@ -27,7 +27,13 @@ const createUserFormSchema = z
       .min(1, { message: 'você deve adicionar um email.' })
       .email({ message: 'digite o email corretamente.' })
       .transform((email) => email.toLowerCase()),
-    role: z.string().min(1, { message: 'você deve adicionar um cargo.' }),
+    role: z
+      .string()
+      .min(1, { message: 'você deve adicionar um cargo.' })
+      .regex(/^([a-z\\áàâãéèêíïóôõöúçñ ]+)$/i, {
+        message: 'o usuário deve conter apenas letras.',
+      })
+      .transform((role) => firstLetterUppercase(role)),
     phone: z.string().min(11, { message: 'digite o número completo com DDD.' }),
     password: z
       .string()
@@ -109,6 +115,14 @@ export default function CreateNewUser() {
   function handleCreateNewUser(data: CreateUserFormData) {
     createNewUser(data)
     reset()
+    if (open) {
+      setOpen(false)
+      setTimeout(() => {
+        setOpen(true)
+      }, 400)
+    } else {
+      setOpen(true)
+    }
   }
 
   // cancel create of user
@@ -250,16 +264,6 @@ export default function CreateNewUser() {
               color="blue"
               disabled={isSubmitting}
               css={{ padding: '0.75rem 1.125rem' }}
-              onClick={() => {
-                if (open) {
-                  setOpen(false)
-                  setTimeout(() => {
-                    setOpen(true)
-                  }, 400)
-                } else {
-                  setOpen(true)
-                }
-              }}
             >
               Criar usuário
             </Button>
@@ -272,7 +276,7 @@ export default function CreateNewUser() {
             onClick={handleCancelCreateUser}
             css={{ padding: '0.75rem 1.125rem' }}
           >
-            Cancelar
+            Voltar
           </Button>
         </Flex>
       </Form>

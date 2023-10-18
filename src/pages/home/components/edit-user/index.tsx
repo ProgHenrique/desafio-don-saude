@@ -23,7 +23,13 @@ const editUserFormSchema = z.object({
     .min(1, { message: 'você deve adicionar um email.' })
     .email({ message: 'digite o email corretamente.' })
     .transform((email) => email.toLowerCase()),
-  role: z.string().min(1, { message: 'você deve adicionar um cargo.' }),
+  role: z
+    .string()
+    .min(1, { message: 'você deve adicionar um cargo.' })
+    .regex(/^([a-z\\áàâãéèêíïóôõöúçñ ]+)$/i, {
+      message: 'o usuário deve conter apenas letras.',
+    })
+    .transform((name) => firstLetterUppercase(name)),
   phone: z.string().min(11, { message: 'digite o número completo com DDD.' }),
 })
 

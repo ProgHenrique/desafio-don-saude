@@ -11,6 +11,7 @@ export default function Router() {
   const { user } = useContext(EmpyContext)
   const [userAuthenticated, setUserAuthenticated] = useState(false)
   const location = useLocation()
+  const hasUser = Object.values(user).every((x) => x !== '')
 
   useEffect(() => {
     setTimeout(() => {
@@ -32,7 +33,7 @@ export default function Router() {
         <Route path="/create-user" element={<CreateNewUser />} />
         <Route
           path="/user"
-          element={!user ? <ViewUserInfos /> : <Navigate to="/" />}
+          element={hasUser ? <ViewUserInfos /> : <Navigate to="/" />}
         />
       </Route>
     </Routes>
