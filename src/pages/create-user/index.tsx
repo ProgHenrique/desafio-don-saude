@@ -59,6 +59,8 @@ export default function CreateNewUser() {
       email: '',
       password: '',
       confirmPassword: '',
+      phone: '',
+      role: '',
     },
   })
 

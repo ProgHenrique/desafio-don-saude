@@ -8,6 +8,7 @@ import convertDateFormat from 'src/utils/convert-date-format'
 import SearchAndCreateUser from './components/search-and-create-user'
 import WithoutUsersRegistered from './components/without-users-registered'
 import DeleteScreenPopUp from './components/delete-user-of-table'
+import EditUserScreenPopUp from './components/edit-user'
 
 export default function TableOfUsers() {
   const { tableColumns, seeColumns } = useContext(EmpyContext)
@@ -65,13 +66,19 @@ export default function TableOfUsers() {
                           justifyContent: 'center',
                         }}
                       >
-                        <Button
-                          color="gray"
-                          css={{ padding: '0.5rem 0.75rem' }}
-                        >
-                          <PenSquare size={12} style={{ lineHeight: 0 }} />
-                          <p>Editar</p>
-                        </Button>
+                        <AlertDialog.Root>
+                          <AlertDialog.Trigger asChild>
+                            <Button
+                              color="gray"
+                              css={{ padding: '0.5rem 0.75rem' }}
+                            >
+                              <PenSquare size={12} style={{ lineHeight: 0 }} />
+                              <p>Editar</p>
+                            </Button>
+                          </AlertDialog.Trigger>
+                          <EditUserScreenPopUp index={index} />
+                        </AlertDialog.Root>
+
                         <AlertDialog.Root>
                           <AlertDialog.Trigger asChild>
                             <Button

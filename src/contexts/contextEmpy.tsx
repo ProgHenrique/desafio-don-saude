@@ -26,6 +26,13 @@ interface CreateUserFormData {
   confirmPassword: string
 }
 
+interface EditUserFormData {
+  name: string
+  email: string
+  role: string
+  phone: string
+}
+
 interface EmpyContextType {
   tableColumns: TableColumn[]
   numberOfUsers: number
@@ -36,6 +43,7 @@ interface EmpyContextType {
   filterUsers: (data: FilterFormData) => void
   clearFilter: () => void
   createNewUser: (data: CreateUserFormData) => void
+  editUser: (index: number, data: EditUserFormData) => void
 }
 
 export const EmpyContext = createContext({} as EmpyContextType)
@@ -84,14 +92,18 @@ export function EmpyContextProvider({ children }: ListContextProviderProps) {
       const role =
         data.role !== '' ? data.role.toLowerCase() : column.role.toLowerCase()
       const createdAt =
-        data.created_at !== '' ? data.created_at : column.created_at
+        data.created_at !== ''
+          ? data.created_at
+          : column.created_at.split('T')[0]
       const updatedAt =
-        data.updated_at !== '' ? data.updated_at : column.updated_at
+        data.updated_at !== ''
+          ? data.updated_at
+          : column.updated_at.split('T')[0]
 
       if (
         role === column.role.toLowerCase() &&
-        createdAt === column.created_at &&
-        updatedAt === column.updated_at
+        createdAt === column.created_at.split('T')[0] &&
+        updatedAt === column.updated_at.split('T')[0]
       ) {
         return column
       }
@@ -121,10 +133,22 @@ export function EmpyContextProvider({ children }: ListContextProviderProps) {
         role,
         password,
         phone: phone.replace(/\D/g, ''),
-        updated_at: new Date().toISOString().split('T')[0],
-        created_at: new Date().toISOString().split('T')[0],
+        updated_at: new Date().toISOString(),
+        created_at: new Date().toISOString(),
       },
     ])
+  }
+
+  const editUser = (index: number, data: EditUserFormData) => {
+    setTableColumns((state) => {
+      state[index].email = data.email
+      state[index].name = data.name
+      state[index].phone = data.phone.replace(/\D/g, '')
+      state[index].role = data.role
+      state[index].updated_at = new Date().toISOString()
+
+      return [...state]
+    })
   }
 
   return (
@@ -139,6 +163,7 @@ export function EmpyContextProvider({ children }: ListContextProviderProps) {
         filterUsers,
         clearFilter,
         createNewUser,
+        editUser,
       }}
     >
       {children}
