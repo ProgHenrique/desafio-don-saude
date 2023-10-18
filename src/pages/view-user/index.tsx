@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom'
 export default function ViewUserInfos() {
   const { user } = useContext(EmpyContext)
   const navigate = useNavigate()
+
   return (
     <Section>
       <Flex>

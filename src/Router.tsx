@@ -1,12 +1,14 @@
-import { Route, Routes, useLocation } from 'react-router-dom'
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import Home from './pages/home'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import Splash from './components/splash'
 import CreateNewUser from './pages/create-user'
 import DefaultLayout from './layout/default-layout'
 import ViewUserInfos from './pages/view-user'
+import { EmpyContext } from './contexts/contextEmpy'
 
 export default function Router() {
+  const { user } = useContext(EmpyContext)
   const [userAuthenticated, setUserAuthenticated] = useState(false)
   const location = useLocation()
 
@@ -28,7 +30,10 @@ export default function Router() {
       >
         <Route path="/" element={<Home />} />
         <Route path="/create-user" element={<CreateNewUser />} />
-        <Route path="/user" element={<ViewUserInfos />} />
+        <Route
+          path="/user"
+          element={!user ? <ViewUserInfos /> : <Navigate to="/" />}
+        />
       </Route>
     </Routes>
   )

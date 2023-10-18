@@ -10,6 +10,8 @@ import { firstLetterUppercase } from 'src/utils/first-letter-uppercase'
 import { Button } from 'src/styles/button'
 import { EmpyContext } from 'src/contexts/contextEmpy'
 import { useNavigate } from 'react-router-dom'
+import * as Toast from '@radix-ui/react-toast'
+import ToastSuccessCreated from './toast-success-created'
 
 const createUserFormSchema = z
   .object({
@@ -43,6 +45,7 @@ export default function CreateNewUser() {
   const { createNewUser } = useContext(EmpyContext)
   const [showPassword, setShowPassword] = useState(false)
   const [showPasswordConfirm, setShowPasswordConfirm] = useState(false)
+  const [open, setOpen] = useState(false)
   const navigate = useNavigate()
 
   const {
@@ -64,8 +67,10 @@ export default function CreateNewUser() {
     },
   })
 
+  // verify if passwords is same
   const passwordMatch = watch('confirmPassword') === watch('password')
 
+  // show or hidden password view
   function handleShowPassword() {
     setShowPassword(!showPassword)
   }
@@ -73,6 +78,7 @@ export default function CreateNewUser() {
     setShowPasswordConfirm(!showPasswordConfirm)
   }
 
+  // format number fone with "()" and "-"
   function handleFormatNumberPhone(event: ChangeEvent<HTMLInputElement>) {
     let inputValue: string = event.target.value.replace(/\D/g, '')
 
@@ -99,11 +105,13 @@ export default function CreateNewUser() {
     setValue('phone', numberFormatted)
   }
 
+  // receive data from form to create user
   function handleCreateNewUser(data: CreateUserFormData) {
     createNewUser(data)
     reset()
   }
 
+  // cancel create of user
   function handleCancelCreateUser() {
     reset()
     navigate('/')
@@ -237,13 +245,27 @@ export default function CreateNewUser() {
             },
           }}
         >
-          <Button
-            color="blue"
-            disabled={isSubmitting}
-            css={{ padding: '0.75rem 1.125rem' }}
-          >
-            Criar usuário
-          </Button>
+          <Toast.Provider swipeDirection="right">
+            <Button
+              color="blue"
+              disabled={isSubmitting}
+              css={{ padding: '0.75rem 1.125rem' }}
+              onClick={() => {
+                if (open) {
+                  setOpen(false)
+                  setTimeout(() => {
+                    setOpen(true)
+                  }, 400)
+                } else {
+                  setOpen(true)
+                }
+              }}
+            >
+              Criar usuário
+            </Button>
+            <ToastSuccessCreated open={open} setOpen={setOpen} />
+          </Toast.Provider>
+
           <Button
             type="button"
             color="gray"
